@@ -3,26 +3,26 @@
 import { useMemo, useState } from "react";
 
 export default function Home() {
-  // Put images in: public/gallery/
-  // Name: 1.jpg, 2.jpg, 3.jpg, 4.jpg, 5.jpg...
   const images = useMemo(
-  () => [
-    "/gallery/1.jpg",
-    "/gallery/2.jpg",
-    "/gallery/3.jpg",
-    "/gallery/4.jpg",
-    "/gallery/5.jpg",
-    "/gallery/6.jpg",
-    "/gallery/7.jpg",
-    "/gallery/8.jpg",
-    "/gallery/9.jpg",
-  ],
-  []
-);
-
+    () => [
+      "/gallery/1.jpg",
+      "/gallery/2.jpg",
+      "/gallery/3.jpg",
+      "/gallery/4.jpg",
+      "/gallery/5.jpg",
+      "/gallery/6.jpg",
+      "/gallery/7.jpg",
+      "/gallery/8.jpg",
+    ],
+    []
+  );
 
   const IMAGES_PER_PAGE = 3;
   const [page, setPage] = useState(0);
+
+  // Lightbox
+  const [lightboxOpen, setLightboxOpen] = useState(false);
+  const [lightboxIndex, setLightboxIndex] = useState(0);
 
   const totalPages = Math.max(
     1,
@@ -33,13 +33,70 @@ export default function Home() {
   const next = () =>
     setPage((p) => Math.min(totalPages - 1, p + 1));
 
-  const visibleImages = images.slice(
+  const visible = images.slice(
     page * IMAGES_PER_PAGE,
     page * IMAGES_PER_PAGE + IMAGES_PER_PAGE
   );
 
+  const openLightbox = (src: string) => {
+    const idx = images.indexOf(src);
+    setLightboxIndex(idx >= 0 ? idx : 0);
+    setLightboxOpen(true);
+  };
+
+  const closeLightbox = () => setLightboxOpen(false);
+
+  const lightboxPrev = () =>
+    setLightboxIndex((i) => (i - 1 + images.length) % images.length);
+
+  const lightboxNext = () =>
+    setLightboxIndex((i) => (i + 1) % images.length);
+
   return (
     <main className="min-h-screen">
+      {/* Lightbox */}
+      {lightboxOpen && (
+        <div
+          className="fixed inset-0 z-[999] bg-black/90 flex items-center justify-center p-4"
+          onClick={closeLightbox}
+        >
+          <button
+            className="absolute top-4 right-4 text-white text-3xl"
+            onClick={closeLightbox}
+          >
+            ×
+          </button>
+
+          <button
+            className="absolute left-4 text-white text-3xl px-3 py-2 bg-black/40 rounded-lg"
+            onClick={(e) => {
+              e.stopPropagation();
+              lightboxPrev();
+            }}
+          >
+            ‹
+          </button>
+
+          <img
+            src={images[lightboxIndex]}
+            alt="Expanded gallery"
+            className="max-h-[85vh] max-w-[92vw] object-contain rounded-2xl"
+            onClick={(e) => e.stopPropagation()}
+            draggable={false}
+          />
+
+          <button
+            className="absolute right-4 text-white text-3xl px-3 py-2 bg-black/40 rounded-lg"
+            onClick={(e) => {
+              e.stopPropagation();
+              lightboxNext();
+            }}
+          >
+            ›
+          </button>
+        </div>
+      )}
+
       {/* Title + Gallery */}
       <section className="py-28 px-6 max-w-6xl mx-auto text-center animate-fadeIn">
         <h1
@@ -78,19 +135,28 @@ export default function Home() {
           </button>
         </div>
 
-        {/* 3-image gallery */}
+        {/* 3-image portrait gallery */}
         <div className="mx-auto w-full max-w-[820px]">
           <div className="grid grid-cols-3 gap-[12px]">
-            {visibleImages.map((src, i) => (
-              <img
+            {visible.map((src) => (
+              <button
                 key={src}
-                src={src}
-                alt={`EBS Barbers gallery ${i + 1}`}
-                className="w-full aspect-square object-cover rounded-[24px]"
-                draggable={false}
-              />
+                type="button"
+                onClick={() => openLightbox(src)}
+              >
+                <img
+                  src={src}
+                  alt="EBS Barbers gallery"
+                  className="w-full aspect-[3/4] object-cover rounded-[24px] border border-white/10"
+                  draggable={false}
+                />
+              </button>
             ))}
           </div>
+
+          <p className="mt-4 text-white/60 text-sm">
+            Tap a photo to expand
+          </p>
         </div>
       </section>
 
