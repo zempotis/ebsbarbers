@@ -1,31 +1,50 @@
 @import "tailwindcss";
 
-/* Brand tokens */
+/* Barbershop premium theme */
 :root {
-  --primary: #000000;
-  --accent: #d4af37;
-  --dark: #0a0a0a;
-  --light: #ffffff;
+  --accent: #e1a730; /* logo gold */
 }
 
+/* Page background */
 body {
-  background: var(--dark);
-  color: var(--light);
+  background: linear-gradient(180deg, #000000 0%, #c89116 100%);
+  color: white;
 }
 
-/* Reusable components */
+/* Components */
 @layer components {
   .btn-primary {
     @apply inline-block px-6 py-3 rounded-md font-semibold transition;
     background: var(--accent);
-    color: black;
+    color: #111;
   }
 
   .btn-primary:hover {
     opacity: 0.9;
   }
 
+  /* Black text panels */
   .card {
-    @apply rounded-xl p-6 border border-white/10 bg-white/5;
+    @apply rounded-2xl p-6;
+    background: #000000;
+    color: white;
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.6);
+  }
+}
+@layer utilities {
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+      transform: translateY(12px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  .animate-fadeIn {
+    animation: fadeIn 0.9s ease-out both;
   }
 }
