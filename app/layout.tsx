@@ -16,7 +16,7 @@ const body = Inter({
 
 export const metadata = {
   title: "EBS Barbers",
-  description: "Premium barbershop. Clean fades. Sharp beards.",
+  description: "Premium barbershop in Borough Green, Sevenoaks.",
 };
 
 export default function RootLayout({
@@ -27,10 +27,11 @@ export default function RootLayout({
   return (
     <html lang="en" className={`${heading.variable} ${body.variable}`}>
       <body style={{ fontFamily: "var(--font-body)" }}>
-        {/* Premium dark navbar */}
+        {/* Header */}
         <header className="fixed top-0 left-0 right-0 z-50 bg-black/90 backdrop-blur border-b border-white/10">
-          <div className="max-w-6xl mx-auto px-6 h-16 flex items-center justify-between">
-            <a href="/" className="flex items-center">
+          <div className="relative max-w-6xl mx-auto px-6 h-16 flex items-center justify-center">
+            {/* Centered logo */}
+            <a href="/" className="flex items-center justify-center">
               <Image
                 src="/images/logo.png"
                 alt="EBS Barbers logo"
@@ -40,16 +41,17 @@ export default function RootLayout({
               />
             </a>
 
-            <nav className="hidden md:flex gap-8 text-sm">
+            {/* Right-side nav (kept but visually secondary) */}
+            <nav className="absolute right-6 hidden md:flex gap-8 text-sm">
               <a
                 href="#services"
-                className="text-white/90 hover:text-[#c9a227] transition focus:outline-none focus:ring-2 focus:ring-[#c9a227] rounded"
+                className="text-white/90 hover:text-[#e1a730] transition"
               >
                 Services
               </a>
               <a
                 href="#location"
-                className="text-white/90 hover:text-[#c9a227] transition focus:outline-none focus:ring-2 focus:ring-[#c9a227] rounded"
+                className="text-white/90 hover:text-[#e1a730] transition"
               >
                 Location
               </a>
@@ -57,6 +59,7 @@ export default function RootLayout({
           </div>
         </header>
 
+        {/* Page content */}
         <main className="pt-16">{children}</main>
       </body>
     </html>
