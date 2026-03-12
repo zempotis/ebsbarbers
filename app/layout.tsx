@@ -7,7 +7,6 @@ const heading = Playfair_Display({
   weight: ["600", "700"],
   variable: "--font-heading",
 });
-
 const body = Inter({
   subsets: ["latin"],
   weight: ["400", "500", "600", "700"],
@@ -40,8 +39,7 @@ export default function RootLayout({
                 priority
               />
             </a>
-
-            {/* Right-side nav (kept but visually secondary) */}
+            {/* Right-side nav */}
             <nav className="absolute right-6 hidden md:flex gap-8 text-sm">
               <a
                 href="#services"
@@ -61,6 +59,12 @@ export default function RootLayout({
 
         {/* Page content */}
         <main className="pt-16">{children}</main>
+
+        {/* Zempotis AI Chatbot */}
+        <script
+          src="https://zempotis.com/chatbot.js?client=ebs-barbers"
+          async
+        />
       </body>
     </html>
   );
