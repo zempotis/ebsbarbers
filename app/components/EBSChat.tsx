@@ -50,7 +50,7 @@ export default function EBSChat({ clientId = "ebs-barbers" }: { clientId?: strin
 
   const logMessage = useCallback(async (role: "user" | "assistant", content: string) => {
     try {
-      await fetch("https://zempotis.com/api/chat-log", {
+      await fetch("https://www.zempotis.com/api/chat-log", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
@@ -102,7 +102,7 @@ export default function EBSChat({ clientId = "ebs-barbers" }: { clientId?: strin
 
     try {
       // ── Points to the EBS Barbers specific route on Zempotis ──
-      const res = await fetch(`https://zempotis.com/api/client/${clientId}`, {
+      const res = await fetch(`https://www.zempotis.com/api/client/${clientId}`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ messages: historyRef.current }),
