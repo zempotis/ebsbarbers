@@ -101,19 +101,21 @@ export default function EBSChat({ clientId = "ebs-barbers" }: { clientId?: strin
     setLoading(true);
 
     try {
-      const res = await fetch("https://zempotis.com/api/chat", {
+      // ── Points to the EBS Barbers specific route on Zempotis ──
+      const res = await fetch(`https://zempotis.com/api/client/${clientId}`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ messages: historyRef.current, clientId }),
+        body: JSON.stringify({ messages: historyRef.current }),
       });
 
       const data = await res.json();
       if (!res.ok) throw new Error(data.error || "API error");
 
-      const botMsg: Message = { id: uid(), role: "assistant", content: data.content, time: now() };
+      // ── Uses data.reply from the client route ──
+      const botMsg: Message = { id: uid(), role: "assistant", content: data.reply, time: now() };
       setMessages((m) => [...m, botMsg]);
-      historyRef.current = [...historyRef.current, { role: "assistant", content: data.content }];
-      logMessage("assistant", data.content);
+      historyRef.current = [...historyRef.current, { role: "assistant", content: data.reply }];
+      logMessage("assistant", data.reply);
     } catch {
       setMessages((m) => [...m, {
         id: uid(), role: "assistant", time: now(),
